@@ -10,34 +10,55 @@
   </head>
   <body>
     <h1>IP Address Locator</h1>
-    <p>Get Info</p>
-    <button id="getInfo">
-      GO!
-    </button>
+    <p>Get your IP Info:
+      <button id="getInfo">
+        GO!
+      </button>
+    </p>
+    <p>Get info from a custom IP:
+      <input id="customIP" defaultValue="" type="text"/>
+      <button id="getCustomInfo">GO!</button>
+    </p>
     <div id="map"></div>
+    <div id="ipInfo"></div>
   </body>
   <script>
     var map;
+    
+    function getIPinfo(url) {
+      $.getJSON(url, function(data) {
+        console.log(data);
+        if (data.error) return;
+        var latlng = new google.maps.LatLng(data.latitude,data.longitude)
+        map.panTo(latlng);
+        map.setZoom(6);
+        var marker = new google.maps.Marker({
+          position: latlng,
+          map: map
+        })
+        var infoHTML = '';
+        for (var key in data) {
+          infoHTML += '<p>' + key +': ' + data[key] + '</p>';
+        }
+        $('#ipInfo').html(infoHTML);
+      })
+      .fail(function(jqXHR, textStatus, errorThrown) { 
+        console.log('getJSON request failed! ' + textStatus); 
+        console.log("incoming "+jqXHR.responseText);
+      })
+    }
     $(document).ready(function() {
       $('#getInfo').click(function() {
-          $.getJSON('https://ipapi.co/json',function(data) {
-//          $.getJSON('https://freegeoip.net/json/',function(data) {
-//          $.getJSON('https://ipinfo.io/json',function(data) {
-            console.log(data);
-            var latlng = new google.maps.LatLng(data.latitude,data.longitude)
-            map.panTo(latlng);
-            map.setZoom(6);
-            var marker = new google.maps.Marker({
-              position: latlng,
-              map: map
-            })
-          })
-          .fail(function(jqXHR, textStatus, errorThrown) { 
-            console.log('getJSON request failed! ' + textStatus); 
-            console.log("incoming "+jqXHR.responseText);
-          })
-        });
-      })
+          getIPinfo('https://ipapi.co/json')
+//         getIPinfo('https://freegeoip.net/json/')
+//         getIPinfo('https://ipinfo.io/json')
+      });
+      
+      $('#getCustomInfo').click(function() {
+        var customIP = $('#customIP').val();
+        getIPinfo('https://ipapi.co/' + customIP + '/json')
+      });
+    })
   </script>
   <script>
       function initMap() {
