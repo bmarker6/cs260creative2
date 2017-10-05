@@ -1,0 +1,14 @@
+#map {
+  min-height: 400px;
+  width: 100%;
+  display: none;
+}
+
+#json {
+  display: none;
+}
+
+.spacer {
+  width: 100%;
+  min-height: 20px;
+}

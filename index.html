@@ -1,67 +1,41 @@
 <!DOCTYPE html>
 <html>
-  <head>
-        <style>
-       #map {
-        height: 400px;
-        width: 100%;
-       }
-    </style>
-    <script
-      src="http://code.jquery.com/jquery-3.2.1.min.js"
-      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-      crossorigin="anonymous">
-    </script>
-  </head>
-  <body>
-    Text
-    <p>Get Info</p>
-    <button id="getInfo">
-      GO!
-    </button>
-    <div id="json"></div>
-    <div id="map"></div>
-  </body>
-  <script>
-    var map;
-    $(document).ready(function() {
-      $('#getInfo').click(function() {
-          $.getJSON('https://ipapi.co/json',function(data) {
-//          $.getJSON('https://freegeoip.net/json/',function(data) {
-//          $.getJSON('https://ipinfo.io/json',function(data) {
-            console.log(data);
-            $("#json").text(JSON.stringify(data));
-            var latlng = new google.maps.LatLng(data.latitude,data.longitude)
-            map.panTo(latlng);
-            var marker = new google.maps.Marker({
-              position: latlng,
-              map: map
-            })
-          })
-          .done(function() { console.log('getJSON request succeeded!'); })
-          .fail(function(jqXHR, textStatus, errorThrown) { 
-            console.log('getJSON request failed! ' + textStatus); 
-            console.log("incoming "+jqXHR.responseText);
-          })
-          .always(function() { console.log('getJSON request ended!');
-          });
-      })
-    })
-  </script>
-  <script>
-        function initMap() {
-        var uluru = {lat: -25.363, lng: 131.044};
-        map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: uluru
-        });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
-      }
-  </script>
-  <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE&callback=initMap">
-  </script>
+
+<head>
+  <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css" />
+  <link rel="stylesheet" href="index.css" />
+  <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="index.js"></script>
+</head>
+
+<body>
+  <div class="spacer" id="spacer-1"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 text-center">
+        <button id="getInfo" class="btn btn-primary">Find Me!</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="map"></div>
+  <div class="spacer"></div>
+  <pre id="json"></pre>
+  <div class="spacer"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>About</h1>
+        <p>
+          This web page, when you click the button, will show you your approximate location based on your ip address. It uses
+          <a href="https://ipapi.co/">ipapi.co</a> to determine your location, then displays your location on Google Maps.
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACz_kSTiCdCMT1Vm9kuhHSmjSbCKOiY28&callback=initMap"></script>
+
 </html>
