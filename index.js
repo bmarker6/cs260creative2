@@ -15,6 +15,12 @@ $(document).ready(function() {
           position: latlng,
           map: map
         });
+
+        var infoHTML = '';
+        for (var key in data) {
+          infoHTML += '<p>' + key + ': ' + data[key] + '</p>';
+        }
+        $('#ipInfo').html(infoHTML);
       })
       .fail(function(jqXHR, textStatus, errorThrown) {
         console.log('getJSON request failed! ' + textStatus);
