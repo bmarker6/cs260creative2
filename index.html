@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-        <style>
-       #map {
-        height: 400px;
-        width: 100%;
-       }
-    </style>
+    <link rel="stylesheet" href="styles.css">
     <script
       src="http://code.jquery.com/jquery-3.2.1.min.js"
       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -14,12 +9,11 @@
     </script>
   </head>
   <body>
-    Text
+    <h1>IP Address Locator</h1>
     <p>Get Info</p>
     <button id="getInfo">
       GO!
     </button>
-    <div id="json"></div>
     <div id="map"></div>
   </body>
   <script>
@@ -30,38 +24,31 @@
 //          $.getJSON('https://freegeoip.net/json/',function(data) {
 //          $.getJSON('https://ipinfo.io/json',function(data) {
             console.log(data);
-            $("#json").text(JSON.stringify(data));
             var latlng = new google.maps.LatLng(data.latitude,data.longitude)
             map.panTo(latlng);
+            map.setZoom(6);
             var marker = new google.maps.Marker({
               position: latlng,
               map: map
             })
           })
-          .done(function() { console.log('getJSON request succeeded!'); })
           .fail(function(jqXHR, textStatus, errorThrown) { 
             console.log('getJSON request failed! ' + textStatus); 
             console.log("incoming "+jqXHR.responseText);
           })
-          .always(function() { console.log('getJSON request ended!');
-          });
+        });
       })
-    })
   </script>
   <script>
-        function initMap() {
-        var uluru = {lat: -25.363, lng: 131.044};
+      function initMap() {
+        var centerUS = {lat: 39.50, lng: -98.35};
         map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: uluru
-        });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
+          zoom: 3,
+          center: centerUS
         });
       }
   </script>
   <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyACz_kSTiCdCMT1Vm9kuhHSmjSbCKOiY28&callback=initMap">
   </script>
 </html>
